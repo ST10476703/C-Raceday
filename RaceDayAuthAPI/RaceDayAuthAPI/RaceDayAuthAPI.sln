@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12023.21 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceDayAuthAPI", "RaceDayAuthAPI\RaceDayAuthAPI.csproj", "{9A9B7ABD-7DA9-4931-82C3-70AD6C303064}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceDayAuthAPI.Tests", "RaceDayAuthAPI.Tests\RaceDayAuthAPI.Tests.csproj", "{11CC39B2-2994-4B3F-B27C-11BCCC8A36EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A9B7ABD-7DA9-4931-82C3-70AD6C303064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9B7ABD-7DA9-4931-82C3-70AD6C303064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9B7ABD-7DA9-4931-82C3-70AD6C303064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9B7ABD-7DA9-4931-82C3-70AD6C303064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11CC39B2-2994-4B3F-B27C-11BCCC8A36EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11CC39B2-2994-4B3F-B27C-11BCCC8A36EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11CC39B2-2994-4B3F-B27C-11BCCC8A36EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11CC39B2-2994-4B3F-B27C-11BCCC8A36EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99A91DFB-E481-421D-B4D4-71A3F92973AC}
+	EndGlobalSection
+EndGlobal
