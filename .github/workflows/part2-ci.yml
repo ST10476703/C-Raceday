@@ -1,0 +1,58 @@
+
+name: RaceDay Part 2 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test RaceDay API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Find solution
+        id: solution
+        shell: bash
+        run: |
+          SOLUTION=$(find . -type f -name "*.sln" -print -quit)
+
+          if [ -z "$SOLUTION" ]; then
+            echo "No solution file found."
+            exit 1
+          fi
+
+          echo "Using solution: $SOLUTION"
+          echo "path=$SOLUTION" >> "$GITHUB_OUTPUT"
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ steps.solution.outputs.path }}"
+
+      - name: Build solution
+        run: dotnet build "${{ steps.solution.outputs.path }}" --configuration Release --no-restore
+
+      - name: Run automated tests
+        env:
+          Jwt__Key: RaceDay-CI-Testing-Key-Only-Replace-For-Real-Deployment-2026
+          Jwt__Issuer: RaceDayApi
+          Jwt__Audience: RaceDayClient
+        run: dotnet test "${{ steps.solution.outputs.path }}" --configuration Release --no-build --logger "trx;LogFileName=RaceDayTests.trx" --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RaceDay-Part2-TestResults
+          path: TestResults/
+          if-no-files-found: warn
