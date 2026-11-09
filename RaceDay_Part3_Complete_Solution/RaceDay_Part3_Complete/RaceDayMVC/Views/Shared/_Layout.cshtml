@@ -1,0 +1,69 @@
+@{
+    var role = Context.Session.GetString("RaceDay.Role");
+    var email = Context.Session.GetString("RaceDay.Email");
+    var signedIn = !string.IsNullOrWhiteSpace(Context.Session.GetString("RaceDay.AccessToken"));
+    var isOrganiser = role == "Organiser";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c1728" />
+    <title>@ViewData["Title"] · RaceDay</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-shell page-width" aria-label="Main navigation">
+            <a class="wordmark" asp-controller="Home" asp-action="Index"><span class="brand-icon">R<span>•</span></span> RACE<span>DAY</span></a>
+            <div class="nav-links">
+                <a asp-controller="Home" asp-action="Index">Discover</a>
+                @if (signedIn && isOrganiser)
+                {
+                    <a asp-controller="Organiser" asp-action="Dashboard">Dashboard</a>
+                    <a asp-controller="Organiser" asp-action="Events">Manage events</a>
+                    <a asp-controller="Organiser" asp-action="Create">Create event</a>
+                }
+                else if (signedIn)
+                {
+                    <a asp-controller="Participant" asp-action="MyEvents">My events</a>
+                    <a asp-controller="Participant" asp-action="MyResults">My results</a>
+                    <a asp-controller="Participant" asp-action="Profile">Profile</a>
+                }
+            </div>
+            <div class="nav-user">
+                @if (signedIn)
+                {
+                    <span class="role-pill">@role</span>
+                    <span class="email-label">@email</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="inline-form">
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-quiet btn-sm" asp-controller="Account" asp-action="Login">Log in</a>
+                    <a class="btn btn-primary btn-sm" asp-controller="Account" asp-action="Register">Join a race</a>
+                }
+            </div>
+        </nav>
+    </header>
+    <main class="page-width main-content">
+        @if (TempData["Success"] is string good)
+        {
+            <div class="alert alert-success" role="status">@good</div>
+        }
+        @if (TempData["Error"] is string bad)
+        {
+            <div class="alert alert-error" role="alert">@bad</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <div class="page-width footer-inner"><span class="wordmark wordmark-small">RACEDAY</span><span>Move together. Finish stronger.</span><span>Built for South African road events</span></div>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
