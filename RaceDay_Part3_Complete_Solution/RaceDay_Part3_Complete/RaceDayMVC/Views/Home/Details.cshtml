@@ -1,0 +1,36 @@
+@model EventDetailPage
+@{ ViewData["Title"] = Model.Event.Name; var role = Context.Session.GetString("RaceDay.Role"); }
+<a class="back-link" asp-action="Index">← All events</a>
+<section class="detail-grid">
+    <div>
+        <div class="detail-banner">
+            @if (!string.IsNullOrWhiteSpace(Model.Event.BannerImageLink)) { <img src="@Url.Action("Show", "Images", new { imageUrl = Model.Event.BannerImageLink })" alt="@Model.Event.Name banner" /> }
+            else { <span class="detail-banner-letter">R / D</span> }
+        </div>
+        <p class="eyebrow mt-large">@Model.Event.EventType.ToUpperInvariant() / EVENT @Model.Event.EventId</p>
+        <h1 class="page-title">@Model.Event.Name</h1>
+        <p class="lead">@Model.Event.Description</p>
+        <div class="info-row"><div><span class="info-label">DATE</span><strong>@Model.Event.EventDate.ToString("dddd, dd MMMM yyyy")</strong></div><div><span class="info-label">LOCATION</span><strong>@Model.Event.Location</strong></div><div><span class="info-label">DISTANCE</span><strong>@Model.Event.Distance km</strong></div></div>
+    </div>
+    <aside class="side-card">
+        <span class="overline">YOUR NEXT CHALLENGE</span>
+        <h2>Take your place.</h2>
+        <p>Choose your division and secure your entry.</p>
+        @if (Model.Categories.Count == 0) { <div class="alert alert-info">No categories have been added for this event yet.</div> }
+        else if (role == "Participant")
+        {
+            <form asp-controller="Participant" asp-action="Enrol" method="post">
+                <input type="hidden" name="eventId" value="@Model.Event.EventId" />
+                <label for="categoryId">Select category</label>
+                <select name="categoryId" id="categoryId" required>
+                    @foreach (var c in Model.Categories) { <option value="@c.CategoryId">@c.Name · @(c.Distance ?? Model.Event.Distance) km</option> }
+                </select>
+                <button class="btn btn-accent btn-wide" type="submit">Enter this race →</button>
+            </form>
+        }
+        else if (role == "Organiser") { <a class="btn btn-primary btn-wide" asp-controller="Organiser" asp-action="Categories" asp-route-eventId="@Model.Event.EventId">Manage categories</a> }
+        else { <a class="btn btn-accent btn-wide" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">Log in to enter →</a> }
+        <p class="small muted">@Model.Categories.Count available categories</p>
+        <div class="category-tags">@foreach (var c in Model.Categories) { <span>@c.Name</span> }</div>
+    </aside>
+</section>

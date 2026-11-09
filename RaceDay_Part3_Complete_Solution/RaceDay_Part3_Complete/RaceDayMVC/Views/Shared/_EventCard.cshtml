@@ -1,0 +1,17 @@
+@model EventDto
+<article class="event-card">
+    <a asp-controller="Home" asp-action="Details" asp-route-id="@Model.EventId" class="event-image" aria-label="View @Model.Name">
+        @if (!string.IsNullOrWhiteSpace(Model.BannerImageLink))
+        {
+            <img src="@Url.Action("Show", "Images", new { imageUrl = Model.BannerImageLink })" alt="@Model.Name banner" loading="lazy" />
+        }
+        else { <div class="event-image-placeholder"><span>START</span><span class="line-art">↗</span></div> }
+        <span class="event-type">@Model.EventType</span>
+    </a>
+    <div class="event-content">
+        <p class="eyebrow">@Model.EventDate.ToString("ddd, dd MMM yyyy") · @Model.Distance km</p>
+        <h3><a asp-controller="Home" asp-action="Details" asp-route-id="@Model.EventId">@Model.Name</a></h3>
+        <p class="muted">@Model.Location</p>
+        <a class="text-link" asp-controller="Home" asp-action="Details" asp-route-id="@Model.EventId">View details <span aria-hidden="true">→</span></a>
+    </div>
+</article>
