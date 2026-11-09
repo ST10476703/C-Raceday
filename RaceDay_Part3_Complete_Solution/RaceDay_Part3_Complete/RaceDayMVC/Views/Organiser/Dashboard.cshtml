@@ -1,0 +1,8 @@
+@model OrganiserDashboard
+@{ ViewData["Title"] = "Organiser dashboard"; }
+<div class="page-top"><div><p class="eyebrow">ORGANISER COMMAND CENTRE</p><h1 class="page-title">YOUR RACE <em>HQ.</em></h1><p class="muted">Own every detail, from first entry to final result.</p></div><a class="btn btn-accent" asp-action="Create">+ Create an event</a></div>
+<div class="stat-grid"><div class="stat-card"><span>YOUR EVENTS</span><strong>@Model.Events.Count</strong><small>Events created</small></div><div class="stat-card"><span>ENTRIES</span><strong>@Model.TotalEnrolments</strong><small>Across your events</small></div><div class="stat-card"><span>COMING UP</span><strong>@Model.Upcoming</strong><small>Events on the calendar</small></div></div>
+<section class="section-block"><div class="section-head"><div><p class="eyebrow">OVERVIEW</p><h2>Event operations</h2></div><a class="text-link" asp-action="Events">Manage all →</a></div>
+@if (!Model.Events.Any()) { <div class="empty-state"><h3>No events yet.</h3><p>Start by creating your first road event.</p><a class="btn btn-primary" asp-action="Create">Create event</a></div> }
+else { <div class="table-wrap"><table class="data-table"><thead><tr><th>EVENT</th><th>DATE</th><th>ENTRIES</th><th>ACTIONS</th></tr></thead><tbody>@foreach (var ev in Model.Events) { <tr><td><strong>@ev.Name</strong><span class="table-sub">@ev.Location · @ev.Distance km</span></td><td>@ev.EventDate.ToString("dd MMM yyyy")</td><td><span class="count-bubble">@(Model.EnrolmentCounts.TryGetValue(ev.EventId, out var count) ? count : 0)</span></td><td><a class="text-link" asp-action="Enrolments" asp-route-eventId="@ev.EventId">Entries & results →</a></td></tr> }</tbody></table></div> }
+</section>
