@@ -1,0 +1,5 @@
+@model List<ResultDto>
+@{ ViewData["Title"] = "My results"; }
+<div class="page-top"><div><p class="eyebrow">PARTICIPANT / FINISH LINES</p><h1 class="page-title">MY <em>RESULTS.</em></h1><p class="muted">Every finish tells a story. Here's yours.</p></div><a class="btn btn-outline" asp-action="MyEvents">My entries →</a></div>
+@if (!Model.Any()) { <div class="empty-state"><span class="empty-icon">✓</span><h3>Your results will appear here.</h3><p>Once the organiser publishes a finish time, you'll see it on your personal leaderboard.</p></div> }
+else { <section class="panel"><div class="table-wrap"><table class="data-table"><thead><tr><th>EVENT</th><th>CATEGORY</th><th>TIME</th><th>POSITION</th></tr></thead><tbody>@foreach (var r in Model.OrderBy(x => x.RecordedAt)) { <tr><td><strong>@r.EventName</strong><span class="table-sub">@r.EventDate.ToString("dd MMM yyyy")</span></td><td>@r.CategoryName</td><td class="mono">@(r.FinishTime?.ToString("HH:mm:ss") ?? "–")</td><td><span class="place-mark">#@(r.FinishPosition?.ToString() ?? "–")</span><span class="table-sub">of @r.TotalFinishers finishers</span></td></tr> }</tbody></table></div></section> }
