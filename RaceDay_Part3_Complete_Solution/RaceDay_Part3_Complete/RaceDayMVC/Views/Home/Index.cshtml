@@ -1,0 +1,22 @@
+@model EventListPage
+@{ ViewData["Title"] = "Discover events"; }
+<section class="hero">
+    <div class="hero-copy">
+        <div class="overline"><span class="dot"></span> THE STARTING LINE IS YOURS</div>
+        <h1>CHASE YOUR <em>NEXT</em> FINISH LINE.</h1>
+        <p>Discover running, cycling and walking events. Choose your distance, find your people, and make every kilometre count.</p>
+        <div class="hero-actions"><a class="btn btn-accent" href="#events">Explore events ↗</a><span>Made for the movement.</span></div>
+    </div>
+    <div class="hero-art" aria-hidden="true"><div class="track-ring track-ring-one"></div><div class="track-ring track-ring-two"></div><span class="hero-number">01<span> / GO</span></span><span class="hero-arrow">↗</span></div>
+</section>
+<section id="events" class="section-block">
+    <div class="section-head"><div><p class="eyebrow">FIND YOUR RACE</p><h2>Upcoming events</h2></div><span class="count-label">@Model.Events.Count events</span></div>
+    <form method="get" asp-controller="Home" asp-action="Index" class="filters" aria-label="Filter upcoming events">
+        <label>Search events or locations <input name="search" value="@Model.Search" placeholder="Pretoria, marathon, cycling..." /></label>
+        <label>Event type <select name="type"><option value="">All disciplines</option><option value="Running" selected="@(Model.Type == "Running")">Running</option><option value="Cycling" selected="@(Model.Type == "Cycling")">Cycling</option><option value="Walking" selected="@(Model.Type == "Walking")">Walking</option></select></label>
+        <button class="btn btn-primary" type="submit">Find events</button>
+    </form>
+    @if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error">@Model.Error</div> }
+    @if (Model.Events.Count == 0) { <div class="empty-state"><span class="empty-icon">⌁</span><h3>No events in this lane yet.</h3><p>Try another search or check back for upcoming races.</p></div> }
+    else { <div class="events-grid">@foreach (var ev in Model.Events) { <partial name="_EventCard" model="ev" /> }</div> }
+</section>
