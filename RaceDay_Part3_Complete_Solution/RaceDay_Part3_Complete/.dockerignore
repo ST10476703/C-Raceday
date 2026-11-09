@@ -1,0 +1,9 @@
+**/.vs/
+**/bin/
+**/obj/
+**/.git/
+**/TestResults/
+**/*.user
+**/secrets.json
+**/*.zip
+.env*
